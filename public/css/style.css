@@ -1,0 +1,158 @@
+
+#titolo{
+
+    font-family: 'Courier New', Courier, monospace;
+    text-align: center;
+    margin-bottom: 40px;
+}
+@media(max-width:700px){
+
+  .header{
+
+    display: none;
+  }
+}
+
+
+.choice-grid{
+ 
+    display: flex;
+    flex-wrap: wrap;
+     align-content:space-between;
+     justify-content: space-between;
+    width: 700px;
+    height: 750px;
+    flex-direction: column;
+    margin-bottom: 20px;
+
+}
+
+
+
+@media(max-width:700px){
+  body{
+      width: 95%;
+  }
+
+}
+
+.choice-grid div{
+  justify-content: end;
+  flex-direction: column;
+  background-color: #f4f4f4;
+  height: 240px;
+  border: 1px;
+  flex-wrap: wrap;
+  border-color: #dcdcdc;
+  width: 32.5%;
+  display: flex;
+}
+
+@media(max-width:500px){
+
+  .choice-grid div{
+    width: 49%;
+    height: 145px;
+    display: flex;
+    justify-content: center;
+  }
+
+}
+
+img.immagini{
+  width: 200px;
+  height: 200px;
+  padding-left: 15px;
+}
+@media(max-width:500px){
+
+  img.immagini{
+    margin-top: 10px;
+    width: 49%;
+    height: 145px;
+  }
+
+}
+
+
+img.immagini_tot{
+  width: 200px;
+  height: 180px;
+  padding-left: 15px;
+  padding-bottom: 8px;
+}
+@media(max-width:500px){
+
+  img.immagini_tot{
+    margin-top: 10px;
+    width: 49%;
+    height: 145px;
+  }
+
+}
+
+.checkbox{
+
+  width: 20px;
+  height: 20px;
+  padding-bottom: 10px;
+  padding-left: 5px;
+  margin-top: 5px
+}
+
+ 
+
+.opacita{
+
+  opacity: 0.6;
+
+}
+
+.box_res{
+  width: 650px;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-content: center;
+  background-color: antiquewhite;
+}
+
+@media(max-width:700px){
+  .box_res{
+
+      margin-left: 25px;
+  }
+
+}
+
+.titolo{
+  margin-top: 40px;
+  width: 600px;
+  height: 100px;
+  background-color: white;
+}
+.contenuto{
+  margin-top: 40px;
+  padding-top: 20px;
+  width: 600px;
+  height: 200px;
+  background-color: white;
+}
+
+.btnreset{
+
+  height: 50px;
+  margin-top: 18px;
+}
+.btnreset:hover{
+  background-color: #e0e0e0;
+
+}
+
+
+.hidden{
+
+  display: none;
+}
