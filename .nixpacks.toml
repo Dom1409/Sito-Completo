@@ -3,10 +3,12 @@ nixPkgs = ['php82', 'composer', 'openssl']
 
 [phases.build]
 cmds = [
-   "composer install --no-dev --optimize-autoloader",
+     "composer install --no-dev --optimize-autoloader",
   "mkdir -p storage/framework/sessions storage/framework/views storage/framework/cache",
-  "chmod -R 775 storage bootstrap/cache"
-   "php artisan config:clear",
+  "chmod -R 777 storage bootstrap/cache",
+  "echo 'Listing storage directory:'",
+  "ls -R /app/storage",  # Questo stampa la struttura delle cartelle per debugging
+  "php artisan config:clear",
   "php artisan cache:clear",
   "php artisan route:clear",
   "php artisan view:clear"
