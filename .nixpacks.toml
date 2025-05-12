@@ -5,10 +5,11 @@ nixPkgs = ['php82', 'composer', 'openssl']
 cmds = [
   "composer install --no-dev --optimize-autoloader",
   "mkdir -p storage/framework/sessions storage/framework/views storage/framework/cache",
-  "chmod -R 777 storage",  # Forza i permessi di scrittura sulla cartella storage
-  "php artisan config:clear",
-  "php artisan cache:clear",
-  "php artisan route:clear",
-  "php artisan view:clear"
+  "chmod -R 777 storage",  # Imposta i permessi corretti
+  "php artisan config:clear",  # Svuota la cache di configurazione
+  "php artisan cache:clear",   # Svuota la cache
+  "php artisan route:clear",   # Svuota la cache delle rotte
+  "php artisan view:clear",    # Svuota la cache delle viste
+  "echo 'Completed Build Phase'"
 ]
 
