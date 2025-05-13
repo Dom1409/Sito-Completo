@@ -1,19 +1,19 @@
 [phases.setup]
-nixPkgs = ['php82', 'composer', 'openssl']
+# Installa le dipendenze di sistema e crea le cartelle necessarie prima di tutto
+nixPkgs = ["php82", "composer", "openssl"]
+cmds = [
+  "mkdir -p bootstrap/cache storage/logs storage/framework/{sessions,views,cache}",
+  "chmod -R 777 bootstrap/cache storage"
+]
 
 [phases.build]
 cmds = [
-  # Installa Composer ignorando i platform reqs
   "composer install --no-dev --optimize-autoloader --ignore-platform-reqs",
-  # Ricrea cartelle di storage e cache
-  "mkdir -p bootstrap/cache storage/logs storage/framework/{sessions,views,cache}",
-  # Forza permessi
-  "chmod -R 777 bootstrap/cache storage",
-  # Pulisci eventuali cache Laravel
   "php artisan config:clear",
   "php artisan cache:clear",
   "php artisan route:clear",
   "php artisan view:clear"
 ]
 
-
+[start]
+cmd = "php artisan serve --host=0.0.0.0 --port=$PORT"
