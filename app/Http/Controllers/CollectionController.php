@@ -42,6 +42,7 @@ class CollectionController extends BaseController
             # Eseguo la richiesta all'URL
             $res = curl_exec($ch);
             Log::info('Risposta cURL: ' . $res); 
+            dd($res);
             //decodifico il json e lo assegno ad una variabile
             $json = json_decode($res, true);
             # Libero le risorse
@@ -50,6 +51,7 @@ class CollectionController extends BaseController
                 return response()->json(['errore durante la chiamata' => curl_error($ch)], 500);
             }
             curl_close($ch);
+            
 
             if ($json === null) {
                 Log::error('Errore JSON vuoto: ' . json_last_error_msg());
