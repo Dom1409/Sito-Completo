@@ -26,7 +26,7 @@ class CollectionController extends BaseController
     //che compaiono nella home o che vengno cercati
     public function do_list($lettera)
     {
-  $url = 'https://www.cheapshark.com/api/1.0/games?title=test';
+  $url = 'https://www.cheapshark.com/api/1.0/games?title=batman';
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $url);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
