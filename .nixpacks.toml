@@ -1,14 +1,19 @@
 [phases.setup]
-nixPkgs = ['php82', 'composer', 'openssl']
+# Installa le dipendenze di sistema e crea le cartelle necessarie prima di tutto
+nixPkgs = ["php82", "composer", "openssl"]
+cmds = [
+  "mkdir -p bootstrap/cache storage/logs storage/framework/{sessions,views,cache}",
+  "chmod -R 777 bootstrap/cache storage"
+]
 
 [phases.build]
 cmds = [
-  "composer install --no-dev --optimize-autoloader",
-  "mkdir -p bootstrap/cache storage/logs storage/framework/{sessions,views,cache}",
-  "chmod -R 777 bootstrap/cache storage bootstrap/cache",
+  "composer install --no-dev --optimize-autoloader --ignore-platform-reqs",
   "php artisan config:clear",
   "php artisan cache:clear",
   "php artisan route:clear",
   "php artisan view:clear"
 ]
 
+[start]
+cmd = "php artisan serve --host=0.0.0.0 --port=$PORT"
