@@ -3,12 +3,17 @@ nixPkgs = ['php82', 'composer', 'openssl']
 
 [phases.build]
 cmds = [
-  "composer install --no-dev --optimize-autoloader",
+  # Installa Composer ignorando i platform reqs
+  "composer install --no-dev --optimize-autoloader --ignore-platform-reqs",
+  # Ricrea cartelle di storage e cache
   "mkdir -p bootstrap/cache storage/logs storage/framework/{sessions,views,cache}",
-  "chmod -R 777 bootstrap/cache storage bootstrap/cache",
+  # Forza permessi
+  "chmod -R 777 bootstrap/cache storage",
+  # Pulisci eventuali cache Laravel
   "php artisan config:clear",
   "php artisan cache:clear",
   "php artisan route:clear",
   "php artisan view:clear"
 ]
+
 
