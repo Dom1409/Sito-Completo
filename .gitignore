@@ -1,4 +1,7 @@
+# Ignoro i php generati in bootstrap/cache
 /bootstrap/cache/*.php
+
+# Regole Laravel di base
 /vendor/
 /node_modules/
 /.env
