@@ -53,7 +53,7 @@ class CollectionController extends BaseController
 
             if ($json === null) {
                 Log::error('Errore JSON vuoto: ' . json_last_error_msg());
-                return response()->json(['errore json vuoto' => 'Risposta non valida o vuota'], 500);
+                return response()->json(['errore json vuoto' => json_last_error_msg()], 500);
             }
         
             //impachetto tutto su un json e lo mando alla richiesta fetch fatta da javascript
