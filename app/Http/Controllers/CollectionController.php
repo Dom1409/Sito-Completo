@@ -26,6 +26,22 @@ class CollectionController extends BaseController
     //che compaiono nella home o che vengno cercati
     public function do_list($lettera)
     {
+   $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, 'https://www.google.com'); // prova con Google
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+
+    $res = curl_exec($ch);
+    if ($res === false) {
+        return response()->json(['errore generale' => curl_error($ch)], 500);
+    }
+    curl_close($ch);
+    return response()->json(['successo' => true]);
+}
+
+    
+    /*{
             // Controllo accesso
             if (!Session::get('user_id')) {
                 return redirect('index');
@@ -71,7 +87,7 @@ class CollectionController extends BaseController
         
             //impachetto tutto su un json e lo mando alla richiesta fetch fatta da javascript
             return response()->json($json);
-    }
+    }*/
         
 // funzione che restituisce la view della descrizione del gioco,
     //in caso non si ha la sessione dell'utente rimanda alla schermata di login
