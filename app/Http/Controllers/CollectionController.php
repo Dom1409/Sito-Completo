@@ -38,11 +38,10 @@ class CollectionController extends BaseController
             curl_setopt($ch, CURLOPT_URL, $url);
             # Setto che voglio ritornato il valore, anziché un boolean (default)
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+           // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             # Eseguo la richiesta all'URL
             $res = curl_exec($ch);
             Log::info('Risposta cURL: ' . $res); 
-            dd($res);
             //decodifico il json e lo assegno ad una variabile
             $json = json_decode($res, true);
             # Libero le risorse
