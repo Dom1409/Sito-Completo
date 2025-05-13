@@ -25,7 +25,6 @@ class CollectionController extends BaseController
     //che compaiono nella home o che vengno cercati
     public function do_list($lettera)
     {
-        try {
             // Controllo accesso
             if (!Session::get('user_id')) {
                 return redirect('index');
@@ -45,6 +44,7 @@ class CollectionController extends BaseController
             $json = json_decode($res, true);
             # Libero le risorse
             if (curl_errno($ch)) {
+                 Log::error('Errore cURL: ' . curl_error($ch));
                 return response()->json(['errore durante la chiamata' => curl_error($ch)], 500);
             }
             curl_close($ch);
@@ -55,9 +55,6 @@ class CollectionController extends BaseController
         
             //impachetto tutto su un json e lo mando alla richiesta fetch fatta da javascript
             return response()->json($json);
-           } catch (Exception $th) {
-            return response() -> json($th->getMessage());
-        }
     }
         
 // funzione che restituisce la view della descrizione del gioco,
