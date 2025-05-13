@@ -127,7 +127,7 @@ function Api(){
     data.append('lettera',lettera);
         console.log(lettera);
         console.log(valore_lettera);
-        fetch(BASE_URL+'collection/list/'+lettera)
+        fetch('https://www.cheapshark.com/api/1.0/games?title=' + lettera)
         .then(onResponce).then(onjson);
         valore_lettera++;
         
