@@ -90,8 +90,12 @@ function onjson(json){
 
   
     console.log(lettera);
-    fetch(BASE_URL+'collection/list/'+lettera)
-  .then(onResponce).then(onjson);
+
+    let response = await fetch(BASE_URL+'collection/list/'+lettera);
+
+    let json = await response.json();
+    onjson(json);
+  //.then(onResponce).then(onjson);
   
     
     const btn_carica=document.querySelector('#btn_carica');
