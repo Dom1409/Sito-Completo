@@ -90,12 +90,16 @@ function onjson(json){
 
   
     console.log(lettera);
-    const fetchApi = async () => {
-     const response = await fetch(BASE_URL+'collection/list/'+lettera);
-     return response.ok
-     ? await response.json()
-     : "Errore"
-   }
+    
+   const fetchApi = async () => {
+  const response = await fetch(BASE_URL + 'collection/list/' + lettera);
+  if (!response.ok) {
+    console.error('Errore nella risposta:', response.status, response.statusText);
+    return 'Errore';
+  }
+  return await response.json();
+}
+
     avvia();
     
     
