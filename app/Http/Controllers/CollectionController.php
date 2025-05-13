@@ -41,8 +41,18 @@ class CollectionController extends BaseController
             # Eseguo la richiesta all'URL
             $res = curl_exec($ch);
             Log::info('Risposta cURL: ' . $res); 
+            if ($res === false) {
+    Log::error('Errore cURL: ' . curl_error($ch));
+    return response()->json(['errore durante la chiamata' => curl_error($ch)], 500);
+}
+
             //decodifico il json e lo assegno ad una variabile
             $json = json_decode($res, true);
+            if ($json === null) {
+    Log::error('Errore JSON: ' . json_last_error_msg());
+    return response()->json(['errore json' => json_last_error_msg()], 500);
+}
+
             # Libero le risorse
             if (curl_errno($ch)) {
                  Log::error('Errore cURL: ' . curl_error($ch));
