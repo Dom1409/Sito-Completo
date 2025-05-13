@@ -85,13 +85,23 @@ function onjson(json){
     }
     
     let valore_lettera = 97;
-  let lettera = String.fromCharCode(valore_lettera);
+    let lettera = String.fromCharCode(valore_lettera);
     
 
   
     console.log(lettera);
-    fetch(BASE_URL+'collection/list/'+lettera)
-  .then(onResponce).then(onjson);
+    const fetchApi = async () => {
+     const response = await fetch(BASE_URL+'collection/list/'+lettera)
+     return await response.json();
+   }
+    avvia();
+    
+    
+   async function avvia() {
+      const data = await fetchApi();
+      onjson(data);
+    }
+   
   
     
     const btn_carica=document.querySelector('#btn_carica');
