@@ -213,7 +213,7 @@ const gioco_value=encodeURIComponent(gioco_input.value);
 
 let data =new FormData();
     data.append('lettera',gioco_value);
- fetch(BASE_URL+'collection/list/'+gioco_value)
+ fetch('https://www.cheapshark.com/api/1.0/games?title=' +gioco_value)
  .then(onResponce).then(onjson2);
 
 
