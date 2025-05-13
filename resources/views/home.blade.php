@@ -2,8 +2,7 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script>
-    const BASE_URL = window.location.origin + '/';
-
+    const BASE_URL="{{ url('/') }}/";
     </script>
     <link href="{{ url ('//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css') }}" rel="stylesheet">
     <script src='{{ url("js/home.js")}}' defer="true"></script>
