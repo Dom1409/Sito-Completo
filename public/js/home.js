@@ -90,8 +90,19 @@ function onjson(json){
 
   
     console.log(lettera);
-    fetch(BASE_URL+'collection/list/'+lettera)
-  .then(onResponce).then(onjson);
+   fetch(BASE_URL + 'collection/list/' + lettera)
+    .then(response => {
+        console.log('Response:', response); // Log della risposta
+        return response.json();
+    })
+    .then(data => {
+        console.log('Data:', data); // Log dei dati ricevuti
+        onjson(data);
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error); // Log degli errori
+    });
+
   
     
     const btn_carica=document.querySelector('#btn_carica');
