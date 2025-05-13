@@ -5,6 +5,7 @@ use Session;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 
 use Illuminate\Routing\Controller as BaseController;
@@ -38,6 +39,8 @@ class CollectionController extends BaseController
             # Setto che voglio ritornato il valore, anziché un boolean (default)
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 30); // 30 secondi di timeout
+
             # Eseguo la richiesta all'URL
             $res = curl_exec($ch);
             Log::info('Risposta cURL: ' . $res); 
@@ -59,10 +62,11 @@ class CollectionController extends BaseController
                 return response()->json(['errore durante la chiamata' => curl_error($ch)], 500);
             }
             curl_close($ch);
+            
 
             if ($json === null) {
                 Log::error('Errore JSON vuoto: ' . json_last_error_msg());
-                return response()->json(['errore json vuoto' => 'Risposta non valida o vuota'], 500);
+                return response()->json(['errore json vuoto' => json_last_error_msg()], 500);
             }
         
             //impachetto tutto su un json e lo mando alla richiesta fetch fatta da javascript

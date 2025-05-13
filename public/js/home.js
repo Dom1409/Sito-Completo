@@ -85,17 +85,29 @@ function onjson(json){
     }
     
     let valore_lettera = 97;
-  let lettera = String.fromCharCode(valore_lettera);
+    let lettera = String.fromCharCode(valore_lettera);
     
 
   
     console.log(lettera);
+    
+   const fetchApi = async () => {
+  const response = await fetch(BASE_URL + 'collection/list/' + lettera);
+  if (!response.ok) {
+    console.error('Errore nella risposta:', response.status, response.statusText);
+    return 'Errore';
+  }
+  return await response.json();
+}
 
-    let response = await fetch(BASE_URL+'collection/list/'+lettera);
-
-    let json = await response.json();
-    onjson(json);
-  //.then(onResponce).then(onjson);
+    avvia();
+    
+    
+   async function avvia() {
+      const data = await fetchApi();
+      onjson(data);
+    }
+   
   
     
     const btn_carica=document.querySelector('#btn_carica');
