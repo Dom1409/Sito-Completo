@@ -91,8 +91,10 @@ function onjson(json){
   
     console.log(lettera);
     const fetchApi = async () => {
-     const response = await fetch(BASE_URL+'collection/list/'+lettera)
-     return await response.json();
+     const response = await fetch(BASE_URL+'collection/list/'+lettera);
+     return response.ok
+     ? await response.json()
+     : "Errore"
    }
     avvia();
     
