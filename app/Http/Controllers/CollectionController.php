@@ -40,6 +40,7 @@ class CollectionController extends BaseController
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             # Eseguo la richiesta all'URL
             $res = curl_exec($ch);
+            Log::info('Risposta cURL: ' . $res); 
             //decodifico il json e lo assegno ad una variabile
             $json = json_decode($res, true);
             # Libero le risorse
@@ -50,6 +51,7 @@ class CollectionController extends BaseController
             curl_close($ch);
 
             if ($json === null) {
+                Log::error('Errore JSON vuoto: ' . json_last_error_msg());
                 return response()->json(['errore json vuoto' => 'Risposta non valida o vuota'], 500);
             }
         
