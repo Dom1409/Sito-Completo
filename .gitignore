@@ -2,8 +2,9 @@
 /bootstrap/cache/*.php
 
 # Regole Laravel di base
-/vendor/
+/vendor/*
 /node_modules/
 /.env
 /bootstrap/cache/desktop.ini
 /storage/logs/*.log
+/storage/framework
