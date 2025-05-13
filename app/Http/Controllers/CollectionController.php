@@ -26,18 +26,25 @@ class CollectionController extends BaseController
     //che compaiono nella home o che vengno cercati
     public function do_list($lettera)
     {
-   $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, 'https://www.google.com'); // prova con Google
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+  $url = 'https://www.cheapshark.com/api/1.0/games?title=test';
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($ch, CURLOPT_TIMEOUT, 15);
+curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 
-    $res = curl_exec($ch);
-    if ($res === false) {
-        return response()->json(['errore generale' => curl_error($ch)], 500);
-    }
-    curl_close($ch);
-    return response()->json(['successo' => true]);
+$res = curl_exec($ch);
+
+if ($res === false) {
+    dd('Errore cURL: ' . curl_error($ch));
+}
+
+$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+curl_close($ch);
+
+dd('HTTP Status Code: ' . $httpCode, 'Risposta: ' . $res);
+
 }
 
     
