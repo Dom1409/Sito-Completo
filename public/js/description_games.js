@@ -177,7 +177,7 @@ function aggiungilista(){
     data.append('_token',csrf_token);
     console.log(BASE_URL);
 
-    fetch(BASE_URL+"wishlist/add", {method: 'POST', body: data}).then(response => response.json())
+    fetch(BASE_URL+"wishlist/add", {method: 'POST', body: data ,credentials: 'include' }).then(response => response.json())
     .then(data => {
       if (data.error) {
         alert("Il Gioco è già presente nella tua Wishlist.");
