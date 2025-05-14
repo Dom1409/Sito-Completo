@@ -175,6 +175,7 @@ function aggiungilista(){
     data.append('nome',tit);
     data.append('image',img);
     data.append('_token',csrf_token);
+    console.log(BASE_URL);
 
     fetch(BASE_URL+"wishlist/add", {method: 'POST', body: data}).then(response => response.json())
     .then(data => {
