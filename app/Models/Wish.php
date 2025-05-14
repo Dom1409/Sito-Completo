@@ -7,13 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Wish extends Model
 {
+    protected $table = 'wishes';
     public $timestamps = false;
 
-        
-    public function user(){
-
-        return $this->belongsTo('App\Model\User');
-
-
-    }
+    protected $fillable = ['id_user', 'title', 'image'];
 }
+

@@ -16,63 +16,56 @@ class WishlistController extends BaseController
 // funzione che prende i valori di tit e img mandati da javascript tramite fetch
 //e le inserisce nel database e se è già presente nel database da un errore
 // se la sessione non è attiva restituisce un array vuoto
-    public function wishlist_add(){
-        try{
+   public function wishlist_add()
+{
+    try {
         if (!Session::get('user_id')) {
-            return [];
+            return response()->json([], 403);
         }
 
-        $tit=request('nome');
-        $img=request('image');
+        $tit = request('nome');
+        $img = request('image');
+        $userId = Session::get('user_id');
 
-        $exist = Wish::where('content', 'LIKE', '%"title":"' . $tit . '"%')
-             ->where('id_user', Session::get('user_id'))
-             ->first();
-
+        $exist = Wish::where('title', $tit)
+                     ->where('id_user', $userId)
+                     ->first();
 
         if ($exist) {
-
-            Session::put('error','exist_wish');
-            return ['error' => 'exist_wish'];
+            return response()->json(['error' => 'exist_wish']);
         }
 
+        Wish::create([
+            'id_user' => $userId,
+            'title'   => $tit,
+            'image'   => $img
+        ]);
 
-        $this->wish= new Wish;
-        $this->wish->id_user = Session::get('user_id');
-        $this->wish->content = json_encode(['title' => $tit, 'image' => $img]);
-        $this->wish->save();
-  
-        return ['success' => true];
-        } catch (\Exception $e) {
+        return response()->json(['success' => true]);
+
+    } catch (\Exception $e) {
         \Log::error('Errore wishlist_add: ' . $e->getMessage());
         return response()->json(['error' => 'Errore server: ' . $e->getMessage()], 500);
     }
-    }
+}
+
 
 
     //funzione che legge i valori nel database e li restituisce tramite json
     // se la sessione non è attiva restituisce un array vuoto
-    public function wishlist_list(){
-
-        if (!Session::get('user_id')) {
-            return [];
-        }
-
-        $userId = Session::get('user_id');
-
-        // Recupero i record dal database corrispondenti all'ID utente della sessione corrente
-        $wishes = Wish::where('id_user', $userId)->get();
-    
-        // salvo i risultati su un array e li restituisco come json,
-        // perché il return converte in automatico l'array in json
-        $result = [];
-        foreach ($wishes as $wish) {
-            $content = json_decode($wish->content);
-            $result[] = $content;
-        }
-
-        return $result;
+   public function wishlist_list()
+{
+    if (!Session::get('user_id')) {
+        return response()->json([], 403);
     }
+
+    $userId = Session::get('user_id');
+
+    $wishes = Wish::where('id_user', $userId)->get(['title', 'image']);
+
+    return response()->json($wishes);
+}
+
 
 
     //funzione che ritorna la view della wishlist e in caso che non esista la sessione ritorna un array vuoto
@@ -91,18 +84,27 @@ class WishlistController extends BaseController
     //funzione che dopo che avviene il click su un button tramite fetch riceve due valori
     //controlla se esistono nel database in caso di esistenza lo elimina
     // se la sessione non è attiva restituisce un array vuoto
-    public function wishlist_remove(){
-
-        if (!Session::get('user_id')) {
-            return [];
-        }
-        $userId = Session::get('user_id');
-        $nome_elemento=request('nome_elemento');
-
-        $wish = Wish::where('content->title', $nome_elemento)->where('id_user', $userId)->first();
-        $wish->delete();
-        
+   public function wishlist_remove()
+{
+    if (!Session::get('user_id')) {
+        return response()->json([], 403);
     }
+
+    $userId = Session::get('user_id');
+    $titolo = request('nome_elemento');
+
+    $wish = Wish::where('title', $titolo)
+                ->where('id_user', $userId)
+                ->first();
+
+    if ($wish) {
+        $wish->delete();
+        return response()->json(['success' => true]);
+    }
+
+    return response()->json(['error' => 'not_found']);
+}
+
 
 
 
