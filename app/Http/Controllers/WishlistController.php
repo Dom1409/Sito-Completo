@@ -17,7 +17,7 @@ class WishlistController extends BaseController
 //e le inserisce nel database e se è già presente nel database da un errore
 // se la sessione non è attiva restituisce un array vuoto
     public function wishlist_add(){
-
+        try{
         if (!Session::get('user_id')) {
             return [];
         }
@@ -25,7 +25,10 @@ class WishlistController extends BaseController
         $tit=request('nome');
         $img=request('image');
 
-        $exist= Wish::where('content->title', $tit)->where('id_user', Session::get('user_id'))->first();
+        $exist = Wish::where('content', 'LIKE', '%"title":"' . $tit . '"%')
+             ->where('id_user', Session::get('user_id'))
+             ->first();
+
 
         if ($exist) {
 
@@ -40,7 +43,10 @@ class WishlistController extends BaseController
         $this->wish->save();
   
         return ['success' => true];
-
+        } catch (\Exception $e) {
+        \Log::error('Errore wishlist_add: ' . $e->getMessage());
+        return response()->json(['error' => 'Errore server: ' . $e->getMessage()], 500);
+    }
     }
 
 
