@@ -1,136 +1,106 @@
+// --- Gestione JSON ricevuto ---
+function onJson(json) {
+    const contenuto = document.querySelector("#contenuto");
+    contenuto.innerHTML = ''; // pulisce prima di caricare nuovi elementi
+    let conteggio = 0;
 
-function onjson(json){
+    if (json.length === 0) {
+        mostraMessaggioVuoto(contenuto);
+        return;
+    }
 
-    const contenuto=document.querySelector("#contenuto");
-   let click=0;
+    json.forEach(gioco => {
+        const elemento = creaElementoGioco(gioco);
+        contenuto.appendChild(elemento);
+        conteggio++;
+    });
 
-        if(json.length===0){
-            const vuoto=document.createElement('p');
-
-                vuoto.textContent="La tua lista è vuota aggiungi un gioco alla tua lista";
-                vuoto.classList.add('vuoto');
-                contenuto.appendChild(vuoto);
-
-        }
-
-
-    for(let i=0; i<json.length;i++){
-
-        const result=json[i];      
-        console.log(result);
-
- 
-
-
- const elementi=document.createElement('div');
- elementi.classList.add('desideri');
-        
-
-        //nome
-
-        const nome=document.createElement('span');
-        let nom=result.title;
-       
-        nome.textContent=nom;
-       nome.classList.add('nomi');
-        elementi.appendChild(nome);
-
-        //immagine
-       
-        const image=document.createElement('img');
-        image.src=result.image;
-       
-        elementi.appendChild(image);
-
-
-        //button
-        const button_elimina=document.createElement('button');
-            button_elimina.textContent="Elimina";
-            button_elimina.classList.add('btn_elimina');
-            elementi.appendChild(button_elimina);
-
-
-
-        contenuto.appendChild(elementi);
-        click++;
-        console.log(click);
-        }
-
-        const all_button=document.querySelectorAll(".desideri .btn_elimina");
-
-        for(const box of all_button){
-            box.addEventListener('click',()=>{
-                click--;
-
-                
-                if(click===0){
-                    const vuoto=document.createElement('p');
-                    vuoto.classList.add('vuoto');
-                        vuoto.textContent="La tua lista è vuota aggiungi un gioco alla tua lista";
-                        
-                        contenuto.appendChild(vuoto);
-        
-                }
-
-                    box.parentNode.remove();
-                    
-                    console.log(click);
-                    const nome_da_eliminare = box.parentNode.querySelector('span').textContent;
-                eliminaElemento(nome_da_eliminare)});
-        }
-
+    aggiornaEventiEliminazione(contenuto, conteggio);
 }
 
+// --- Crea singolo elemento della lista ---
+function creaElementoGioco(gioco) {
+    const elemento = document.createElement('div');
+    elemento.classList.add('desideri');
 
+    // Nome gioco
+    const nome = document.createElement('span');
+    nome.textContent = gioco.title;
+    nome.classList.add('nomi');
+    elemento.appendChild(nome);
+
+    // Immagine
+    const immagine = document.createElement('img');
+    immagine.src = gioco.image;
+    elemento.appendChild(immagine);
+
+    // Bottone elimina
+    const bottoneElimina = document.createElement('button');
+    bottoneElimina.textContent = "Elimina";
+    bottoneElimina.classList.add('btn_elimina');
+    elemento.appendChild(bottoneElimina);
+
+    return elemento;
+}
+
+// --- Mostra messaggio lista vuota ---
+function mostraMessaggioVuoto(contenitore) {
+    const messaggio = document.createElement('p');
+    messaggio.textContent = "La tua lista è vuota, aggiungi un gioco alla tua lista";
+    messaggio.classList.add('vuoto');
+    contenitore.appendChild(messaggio);
+}
+
+// --- Gestione eliminazione ---
+function aggiornaEventiEliminazione(contenitore, conteggioIniziale) {
+    const bottoni = contenitore.querySelectorAll(".btn_elimina");
+    let conteggio = conteggioIniziale;
+
+    bottoni.forEach(bottone => {
+        bottone.addEventListener('click', () => {
+            const elemento = bottone.closest('.desideri');
+            const nomeGioco = elemento.querySelector('span').textContent;
+
+            elemento.remove();
+            conteggio--;
+
+            eliminaElemento(nomeGioco);
+
+            if (conteggio === 0) {
+                mostraMessaggioVuoto(contenitore);
+            }
+
+            console.log(`Elementi rimanenti: ${conteggio}`);
+        });
+    });
+}
+
+// --- Elimina elemento da server ---
+function eliminaElemento(nomeGioco) {
+    console.log(`Elimino: ${nomeGioco}`);
+    const dati = new FormData();
+    dati.append('nome_elemento', nomeGioco);
+    dati.append('_token', csrf_token);
+
+    fetch(`${BASE_URL}wishlist/remove`, {
+        method: 'POST',
+        body: dati
+    }).then(r => console.log("Risposta eliminazione:", r));
+}
+
+// --- Utility fetch ---
 function dispatchResponse(response) {
-
-    console.log(response);
     return response.json();
-  }
-
-
-fetch("list").then(dispatchResponse).then(onjson);
-
-
-
-
-    function eliminaElemento(nome_elemento) {
-        console.log(nome_elemento);
-        const data = new FormData();
-        data.append('nome_elemento', nome_elemento);
-        data.append('_token',csrf_token);
-      
-        fetch(BASE_URL+"wishlist/remove", { method: 'POST', body: data }).then(data=>console.log(data));
-
 }
 
+// --- Fetch iniziale lista ---
+fetch("list").then(dispatchResponse).then(onJson);
 
+// --- Navigazione ---
+document.querySelector("#btn_indietro").addEventListener('click', () => {
+    location.href = `${BASE_URL}description`;
+});
 
-
-
-
-
-
-
-
-
-function ritorna_indietro(){
-
-    location.href=BASE_URL+"description";
-}
-
-
-const btn_indietro=document.querySelector("#btn_indietro");
-btn_indietro.addEventListener('click',ritorna_indietro);
-
-
-
-function ritorna_home(){
-
-    location.href=BASE_URL+"home";
-}
-
-
-const btn_home=document.querySelector("#btn_home");
-btn_home.addEventListener('click',ritorna_home);
-
+document.querySelector("#btn_home").addEventListener('click', () => {
+    location.href = `${BASE_URL}home`;
+});

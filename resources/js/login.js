@@ -1,19 +1,16 @@
-  const togglePassword = document.querySelector('#togglePassword');
-  const password = document.querySelector('#id_password');
+// --- Toggle visibilità password ---
+const togglePasswordBtn = document.querySelector('#togglePassword');
+const passwordInput = document.querySelector('#id_password');
 
-  togglePassword.addEventListener('click', function (e) {
-    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-    password.setAttribute('type', type);
-  
-    this.classList.toggle('fa-eye-slash');
-  });
+togglePasswordBtn.addEventListener('click', () => {
+  const isPassword = passwordInput.type === 'password';
+  passwordInput.type = isPassword ? 'text' : 'password';
+  togglePasswordBtn.classList.toggle('fa-eye-slash');
+});
 
+// --- Navigazione al registro ---
+const btnRegister = document.querySelector("#btn_reg");
 
-function reg(){
-
-    location.href="register";
-}
-
-
-const btn_home=document.querySelector("#btn_reg");
-btn_home.addEventListener('click',reg);
+btnRegister.addEventListener('click', () => {
+  location.href = "register";
+});

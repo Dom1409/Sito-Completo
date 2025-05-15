@@ -1,160 +1,129 @@
-//funzione che restituisce tutto quello che serve dll'api
-function onjson(json){
-    const gioco_tot=document.querySelector('#contenuto');
-    const result = json[valore].data;
-   
-    //creo il mio box
-    const gioco=document.createElement('div');
-    gioco.classList.add('gioco');
+// Variabili globali utili
+let gameTitle, gameImage;
+const BASE_URL = window.location.origin;
+const gameContainer = document.querySelector('#contenuto');
 
-    //titolo
-    const title = document.createElement('span');
-    tit=result.name;
-    let titolo = result.name;
-    title.textContent=titolo;
-    title.classList.add('title');
-    
-    //image_header
-    const image_header=document.createElement('img');
-    image_header.src=result.header_image;
-    img=result.header_image;
-    const contenitore_immagine=document.createElement('div');
-    contenitore_immagine.classList.add('contenitore_immagine');
-    image_header.classList.add('immagine_header');
-    contenitore_immagine.appendChild(image_header);
+// Fetch iniziale
+const gameId = sessionStorage.getItem('valore');
+fetch(`${BASE_URL}/description/info/${gameId}`)
+    .then(dispatchResponse)
+    .then(json => renderGame(json[gameId].data));
 
-    //descrizione_gioco
-    const descrizione=document.createElement('div');
-    descrizione.textContent="Descrizione";
-    descrizione.classList.add("descr");
-    const descizione_generale=document.createElement('div');
-    descizione_generale.classList.add('descrizione_generale');
-    const contenitore=document.createElement('div');
-    contenitore.classList.add('contenitore_descrizione');
-    contenitore.appendChild(descizione_generale);
-    let general_description=result.about_the_game;
-    descizione_generale.innerHTML=general_description;
-    
-    //requisiti minimi per poter giocare
-    const requisiti=document.createElement('div');
-    requisiti.textContent="Requisiti Minimi";
-    requisiti.classList.add("descr");
-    const requisiti_minimi=document.createElement('div');
-    requisiti_minimi.classList.add('requisiti');
-    let requisiti_minimi_richiesti=result.pc_requirements.minimum;
-    requisiti_minimi.innerHTML=requisiti_minimi_richiesti;
-
-    //appendo tutti gli elementi al nodo padre
-    gioco.appendChild(title);
-    gioco.appendChild(contenitore_immagine);
-    gioco.appendChild(descrizione);
-    gioco.appendChild(contenitore);
-    gioco.appendChild(requisiti);
-    gioco.appendChild(requisiti_minimi);
-    
-     //screenshot
-     const screen=document.createElement('div');
-     screen.textContent="Foto Gioco";
-     screen.classList.add("descr");
-     gioco.appendChild(screen);
-
-    if (result.screenshots.length > 0) {
-        const screenshotsContainer = document.createElement('div');
-        screenshotsContainer.classList.add('contenitore_screen');
-
-        //sia parte di modale che parte dei screen presi dal json
-        const modale=document.createElement('div');
-        const modalImage=document.createElement('img');
-
-        for (let i = 0; i < result.screenshots.length; i++) {
-            const screenshot = result.screenshots[i];
-            const screen_gioco = document.createElement('img');
-            screen_gioco.src = screenshot.path_thumbnail;
-            screenshotsContainer.appendChild(screen_gioco);
-            screen_gioco.classList.add('screen_thumbnail');
-
-            screen_gioco.addEventListener('click',function(event){
-                modale.classList.add('immagine_grande');
-                modalImage.src=screen_gioco.src;
-                gioco_tot.appendChild(modale);
-                event.stopPropagation();
-                btn_x.style.visibility="visible";
-                });
-        }
-        //button x della modale
-        const btn_x=document.createElement('div');
-        btn_x.classList.add('btn_x');
-        modale.appendChild(btn_x);
-
-        const x1=document.createElement('span');
-        const x2=document.createElement('span');
-        x1.classList.add('icon_x1');
-        x2.classList.add('icon_x2');
-
-        btn_x.appendChild(x1);
-        btn_x.appendChild(x2);
-
-        btn_x.addEventListener('click',function(){
-            modale.remove();
-            btn_x.style.visibility="hidden";
-        });
-        gioco.appendChild(screenshotsContainer);
-        modale.appendChild(modalImage);
-        gioco_tot.appendChild(modale);
-    }
-    //appendo tutti i gioco ad un nodo padre
-    gioco_tot.appendChild(gioco);
-}
-
-// ottengo il valore(steam_id) dalla sessione del browser preso dall'elemento cliccato dalla home e faccio
-//la fetch con questo valore 
-let valore=sessionStorage.getItem('valore');
-let formdata=new FormData();
-formdata.append('valore',valore);
-
-/*const BASE_URL = window.location.origin;
-fetch(BASE_URL + 'description/info/' + valore)
-.then(dispatchResponse)
-.then(data=>onjson(data));*/
-
-
-//funzione che converte la risposta della fetch da json ad oggetto
+// Funzioni di utilità
 function dispatchResponse(response) {
-    console.log(response);
     return response.json();
 }
 
-//funzione che indirizza alla home
-function ritorna_home(){
-
-    location.href="home";
+function createElement(tag, className = '', content = '') {
+    const el = document.createElement(tag);
+    if (className) el.classList.add(className);
+    if (content) el.textContent = content;
+    return el;
 }
 
-const btn_home=document.querySelector("#btn_home");
-btn_home.addEventListener('click',ritorna_home);
+// Render principale
+function renderGame(data) {
+    const gameBox = createElement('div', 'gioco');
+    gameTitle = data.name;
+    gameImage = data.header_image;
 
-//funzione che dopo il click al button desideri fa la fetch al server per aggiungere l'elemento al database
-function aggiungilista(){
-    const data= new FormData(); 
+    // Titolo
+    const title = createElement('span', 'title', gameTitle);
+    gameBox.appendChild(title);
 
-    data.append('nome',tit);
-    data.append('image',img);
-    data.append('_token',csrf_token);
+    // Immagine header
+    const imageHeader = createElement('img', 'immagine_header');
+    imageHeader.src = gameImage;
+    const imageContainer = createElement('div', 'contenitore_immagine');
+    imageContainer.appendChild(imageHeader);
+    gameBox.appendChild(imageContainer);
 
-    fetch(BASE_URL+"wishlist/add", {method: 'POST', body: data}).then(response => response.json())
-    .then(data => (data.success
-        ? alert("Aggiunto alla tua Wishlist con Successo!!")
-        :alert("Il Gioco è già presente nella tua Wishlist.")))
+    // Descrizione
+    gameBox.appendChild(createElement('div', 'descr', 'Descrizione'));
+    const descriptionWrapper = createElement('div', 'contenitore_descrizione');
+    const descriptionContent = createElement('div', 'descrizione_generale');
+    descriptionContent.innerHTML = data.about_the_game;
+    descriptionWrapper.appendChild(descriptionContent);
+    gameBox.appendChild(descriptionWrapper);
+
+    // Requisiti minimi
+    gameBox.appendChild(createElement('div', 'descr', 'Requisiti Minimi'));
+    const requirements = createElement('div', 'requisiti');
+    requirements.innerHTML = data.pc_requirements.minimum;
+    gameBox.appendChild(requirements);
+
+    // Screenshot
+    if (data.screenshots?.length) {
+        gameBox.appendChild(createElement('div', 'descr', 'Foto Gioco'));
+        const screenshotsContainer = createElement('div', 'contenitore_screen');
+        const modal = createModal();
+
+        data.screenshots.forEach(screenshot => {
+            const thumb = createElement('img', 'screen_thumbnail');
+            thumb.src = screenshot.path_thumbnail;
+            thumb.addEventListener('click', () => {
+                modal.image.src = thumb.src;
+                modal.container.classList.add('immagine_grande');
+                modal.closeBtn.style.visibility = 'visible';
+                gameContainer.appendChild(modal.container);
+            });
+            screenshotsContainer.appendChild(thumb);
+        });
+
+        gameBox.appendChild(screenshotsContainer);
+    }
+
+    gameContainer.appendChild(gameBox);
 }
 
-let img;
-let tit;
-const btn_desideri=document.querySelector("#btn_desideri");
-btn_desideri.addEventListener('click',aggiungilista);
+// Modale per screenshot
+function createModal() {
+    const modal = createElement('div');
+    const modalImage = createElement('img');
+    const closeBtn = createElement('div', 'btn_x');
 
-//funzione che indirizza alla visualizzazione della lista desideri
-const btn_visualizza_desideri=document.querySelector("#btn_visualizza_desideri");
+    const x1 = createElement('span', 'icon_x1');
+    const x2 = createElement('span', 'icon_x2');
+    closeBtn.appendChild(x1);
+    closeBtn.appendChild(x2);
 
-btn_visualizza_desideri.addEventListener('click',()=>{
-    location.href="wishlist/view";
+    closeBtn.addEventListener('click', () => {
+        modal.remove();
+        closeBtn.style.visibility = 'hidden';
+    });
+
+    modal.appendChild(modalImage);
+    modal.appendChild(closeBtn);
+
+    return { container: modal, image: modalImage, closeBtn };
+}
+
+// Aggiungi alla wishlist
+function aggiungiAllaWishlist() {
+    const formData = new FormData();
+    formData.append('nome', gameTitle);
+    formData.append('image', gameImage);
+    formData.append('_token', csrf_token);
+
+    fetch(`${BASE_URL}/wishlist/add`, {
+        method: 'POST',
+        body: formData,
+    })
+        .then(res => res.json())
+        .then(data => {
+            alert(data.success
+                ? "Aggiunto alla tua Wishlist con Successo!!"
+                : "Il Gioco è già presente nella tua Wishlist.");
+        });
+}
+
+// Navigazione
+document.querySelector('#btn_home').addEventListener('click', () => {
+    location.href = "home";
+});
+
+document.querySelector('#btn_desideri').addEventListener('click', aggiungiAllaWishlist);
+
+document.querySelector('#btn_visualizza_desideri').addEventListener('click', () => {
+    location.href = "wishlist/view";
 });
