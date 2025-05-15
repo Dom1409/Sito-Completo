@@ -92,7 +92,7 @@ function onjson(json){
     console.log(lettera);
     
   const fetchApi = async () => {
-  const response = await fetch('https://www.cheapshark.com/api/1.0/games?title=' + lettera);
+  const response = await fetch(BASE_URL + 'collection/list/' + lettera);
   if (!response.ok) {
     console.error('Errore:', response.status, response.statusText);
     return 'Errore';
