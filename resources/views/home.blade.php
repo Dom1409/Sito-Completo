@@ -1,16 +1,12 @@
 <html>
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script>
-    const BASE_URL="{{ url('/') }}/";
-    </script>
-    <link href="{{ url ('//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css') }}" rel="stylesheet">
-    <script src='{{ url("js/home.js")}}' defer="true"></script>
-    <link rel="stylesheet" href="{{url('css\home.css')}}">
-    
-
-
-    <title>Home</title>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script>
+            const BASE_URL="{{ url('/') }}/";
+        </script>
+        @vite(['resources/css/home.css', 'resources/js/home.js'])
+        <link href="{{ url ('//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css') }}" rel="stylesheet">
+        <title>Home</title>
     </head>
 
     <header>

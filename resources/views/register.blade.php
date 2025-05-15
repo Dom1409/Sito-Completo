@@ -1,21 +1,17 @@
 <html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<script src='{{ url("js/registrazione.js")}}' defer="true"></script>
-<link rel="stylesheet" href="{{ url('css\registrazione.css') }}"/>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        @vite(['resources/css/registrazione.css', 'resources/js/registrazione.js'])
+    </head>
 
-</head>
-
-<header>
-<nav id="nav_login">
-        <div id="contenuto_log">
-            <img id="img_logo" src="logo.gif">
-           
-        </div>
- <button id="btn_indietro">Torna al Login</button>
-    </nav>
-
-</header>
+    <header>
+        <nav id="nav_login">
+            <div id="contenuto_log">
+                <img id="img_logo" src="logo.gif">
+            </div>
+        <button id="btn_indietro">Torna al Login</button>
+        </nav>
+    </header>
 
 <body>
 

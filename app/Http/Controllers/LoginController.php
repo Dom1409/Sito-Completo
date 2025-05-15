@@ -17,37 +17,37 @@ class LoginController extends BaseController
         return view('login')->with('error', $error);   
     }
 
+    public function validateData($username, $password): bool
+    {
+        $isValid = !(empty($username) || empty($password));
+        if(!$isValid) Session::put('error','empty_fields');
+        return $isValid;
+    }
 
     //funzione che, se ci sono errori, ti reindirizza alla stessa pagina e poi su html ti stampa l'errore seguente,
     //altrimenti significa che non ci sono errori e allora ti indirizza alla home
     public function do_login(){
+        $username = request('username');
+        $password = request('password');
 
-        //validazione dati
-        if(strlen(request('username'))==0 || strlen(request('password'))==0){
+        if($this -> validateData($username, $password))
+            return redirect('index') -> withInput();
 
-            //sessione per errore:
+        $user = User::where('username', $username) -> first();
+        $isValidPassword = password_verify($password, $user -> password);
 
-                Session::put('error','empty_fields');
-
-            return redirect('index')->withInput();
-        }
-
-        $user = User::where('username',request('username'))->first();
-        if(!$user || !password_verify(request('password'),$user->password)){
-
+        if(!$user || !$isValidPassword)
+        {
             Session::put('error','wrong');
-            return redirect('index')->withInput();
+            return redirect('index') -> withInput();
         }
-
 
         //login
-
         Session::put('user_id',$user->id);
-
         //redirect alla home
         return redirect('home');
-
     }
+
 
 
 //funzione che restituisce la view della registrazione con gli eventuali errori
