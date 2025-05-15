@@ -26,26 +26,24 @@ class CollectionController extends BaseController
     //che compaiono nella home o che vengno cercati
  public function do_list($lettera)
 {
-   $ch = curl_init();
-
+ $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, "https://www.cheapshark.com/api/1.0/games?title=a");
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-
-// Simula un browser
-curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
+curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/122 Safari/537.36');
 curl_setopt($ch, CURLOPT_HTTPHEADER, [
     'Accept: application/json',
-    'Accept-Language: en-US,en;q=0.9',
+    'Accept-Language: en-US,en;q=0.9'
 ]);
 
 $response = curl_exec($ch);
 
-if(curl_errno($ch)) {
-    echo 'Errore cURL: ' . curl_error($ch);
+if (curl_errno($ch)) {
+    echo 'Errore: ' . curl_error($ch);
 } else {
     echo $response;
 }
+
 curl_close($ch);
 }
 
