@@ -24,28 +24,24 @@ class CollectionController extends BaseController
 
     //funzione che restituisce il json dell'api che contiene la lista dei giochi
     //che compaiono nella home o che vengno cercati
-  public function do_list($lettera)
+ public function do_list($lettera)
 {
+    header('Access-Control-Allow-Origin: *');
+    header('Content-Type: application/json');
+
     $url = 'https://www.cheapshark.com/api/1.0/games?title=' . $lettera;
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 15);
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 
     $res = curl_exec($ch);
 
     if ($res === false) {
-        http_response_code(500); // errore server
-        echo json_encode(['error' => 'Errore cURL: ' . curl_error($ch)]);
-        exit;
+        echo json_encode(['errore' => curl_error($ch)]);
+        return;
     }
 
     curl_close($ch);
-
-    // Imposta header JSON e stampa la risposta
-    header('Content-Type: application/json');
     echo $res;
 }
 
