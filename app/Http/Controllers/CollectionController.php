@@ -24,26 +24,29 @@ class CollectionController extends BaseController
 
     //funzione che restituisce il json dell'api che contiene la lista dei giochi
     //che compaiono nella home o che vengno cercati
-    public function do_list($lettera)
-    {
-  $url='https://www.cheapshark.com/api/1.0/games?title='.$lettera;
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, $url);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-curl_setopt($ch, CURLOPT_TIMEOUT, 15);
-curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+  public function do_list($lettera)
+{
+    $url = 'https://www.cheapshark.com/api/1.0/games?title=' . $lettera;
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 15);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 
-$res = curl_exec($ch);
+    $res = curl_exec($ch);
 
-if ($res === false) {
-    dd('Errore cURL: ' . curl_error($ch));
-}
+    if ($res === false) {
+        http_response_code(500); // errore server
+        echo json_encode(['error' => 'Errore cURL: ' . curl_error($ch)]);
+        exit;
+    }
 
-$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-curl_close($ch);
+    curl_close($ch);
 
-
+    // Imposta header JSON e stampa la risposta
+    header('Content-Type: application/json');
+    echo $res;
 }
 
 // funzione che restituisce la view della descrizione del gioco,
