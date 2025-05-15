@@ -91,7 +91,7 @@ function onjson(json){
   
     console.log(lettera);
     
-    fetch('https://www.cheapshark.com/api/1.0/games?title=' + lettera)
+    fetch(BASE_URL + 'collection/list/' + lettera)
         .then(onResponce).then(onjson);
    
   
