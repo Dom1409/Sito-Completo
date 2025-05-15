@@ -37,13 +37,19 @@ class CollectionController extends BaseController
     $res = curl_exec($ch);
 
     if ($res === false) {
-        http_response_code(500); // errore server
-        echo json_encode(['error' => 'Errore cURL: ' . curl_error($ch)]);
-        exit;
+        http_response_code(500);
+        return response()->json(['error' => 'Errore cURL: ' . curl_error($ch)]);
     }
 
     curl_close($ch);
+
+    // 💡 Risposta JSON valida
+    return response($res, 200)
+           ->header('Content-Type', 'application/json');
+           Log::error('CheapShark response: ' . $res);
+
 }
+
 
 // funzione che restituisce la view della descrizione del gioco,
     //in caso non si ha la sessione dell'utente rimanda alla schermata di login
