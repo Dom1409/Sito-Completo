@@ -90,7 +90,7 @@ function onjson(json){
 
   
     console.log(lettera);
-    
+    console.log(BASE_URL);
     fetch(BASE_URL + 'collection/list/' + lettera)
         .then(onResponce).then(onjson);
    
