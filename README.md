@@ -1,4 +1,4 @@
-<p Per realizzare questo sito ho usato laravel come framework per gestire il lato backend, ho utilizzato come linguaggi di programmazione: PHP, HTML5, JAVASCRIPT, CSS. Ed è presente pure qualche query utilizzata per fare interagire il mio sito web con il mio database relazionale.</p>
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
@@ -7,6 +7,12 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
+
+## Informazioni Sito
+
+Per realizzare questo sito ho usato laravel come framework per gestire il lato backend, ho utilizzato come linguaggi di programmazione: PHP, HTML5, JAVASCRIPT, CSS. Ed è presente pure qualche query utilizzata per fare interagire il mio sito web con il mio database relazionale.
+
+
 
 ## About Laravel
 
