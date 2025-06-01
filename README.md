@@ -10,7 +10,7 @@
 
 ## Informazioni Sito
 
-Per realizzare questo sito ho usato laravel come framework per gestire il lato backend, ho utilizzato come linguaggi di programmazione: PHP, HTML5, JAVASCRIPT, CSS. Ed è presente pure qualche query utilizzata per fare interagire il mio sito web con il mio database relazionale.
+Per realizzare questo sito ho usato laravel come framework per gestire il lato backend, ho utilizzato come linguaggi di programmazione: PHP, HTML5, JAVASCRIPT, CSS. Ed è presente pure qualche query in SQL utilizzata per fare interagire il mio sito web con il mio database relazionale.
 
 
 
